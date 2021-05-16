@@ -33,7 +33,7 @@ public class AuthenticationService {
 			ResponseEntity<AccessToken> tokenResponse = tokenGenerator
 					.getTokenInfo(oauthServer + tokenPath, loginRequest.getClient(), loginRequest.getSecret());
 			AccessToken tokenInfo = tokenResponse.getBody();
-			responseStatus = HttpStatus.ACCEPTED;
+			responseStatus = HttpStatus.OK;
 			loginResponse.setResult(SUCCESS_RESULT);
 			loginResponse.setAccessToken(tokenInfo.getAccess_token());
 		} else {
