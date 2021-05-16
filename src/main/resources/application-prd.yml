@@ -6,5 +6,5 @@ atp:
     id: idp-client
     secret: secretKey1
   server:
-    host: https://idp-prd.herokuapp.com
+    host: https://atp-prd.herokuapp.com
     token-path: /oauth/token
