@@ -8,21 +8,28 @@ import com.mb.base.idp.config.oauth.jwt.TokenGenerator;
 import com.mb.base.idp.model.dto.PassClientLoginRequest;
 import com.mb.base.idp.model.dto.PassClientLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class AuthenticationService {
-	
+
 	@Autowired
 	TokenGenerator tokenGenerator;
 	
-	private String tokenEndpoint = "http://localhost:9090/oauth/token";
+	@Value("${atp.server.host}")
+	private String oauthServer;
+	
+	@Value("${atp.server.token-path}")
+	private String tokenPath;
+	
+	private static final String SUCCESS_RESULT = "success";
 	
 	public ResponseEntity<PassClientLoginResponse> passwordAndClientAuthenticate(PassClientLoginRequest loginRequest) {
 		PassClientLoginResponse loginResponse = new PassClientLoginResponse();
 		ResponseEntity<AccessToken> tokenResponse = tokenGenerator
-				.getTokenInfo(tokenEndpoint, loginRequest.getClient(), loginRequest.getSecret());
+				.getTokenInfo(oauthServer + tokenPath, loginRequest.getClient(), loginRequest.getSecret());
 		AccessToken tokenInfo = tokenResponse.getBody();
-		loginResponse.setResult("success");
+		loginResponse.setResult(SUCCESS_RESULT);
 		loginResponse.setAccessToken(tokenInfo.getAccess_token());
 		return new ResponseEntity<PassClientLoginResponse>(loginResponse, tokenResponse.getStatusCode());
 	}
