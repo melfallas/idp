@@ -18,6 +18,10 @@ public class ResourceServerConfig extends DefaultResourceServer {
 				"/api/test1",
 				"/api/test3"
 				).permitAll()
+		.antMatchers(
+				HttpMethod.POST,
+				"/api/auth/pass-client-login"
+				).permitAll()
 		.anyRequest().authenticated()
 		;
 	}
