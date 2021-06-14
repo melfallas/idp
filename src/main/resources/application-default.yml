@@ -6,6 +6,6 @@ atp:
     id: idp-client
     secret: secretKey1
   server:
-    #host: http://localhost:9090
-    host: https://atp-ist.herokuapp.com
+    host: http://localhost:9090
+    #host: https://atp-ist.herokuapp.com
     token-path: /oauth/token

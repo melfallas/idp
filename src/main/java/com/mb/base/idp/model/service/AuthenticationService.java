@@ -32,10 +32,17 @@ public class AuthenticationService {
 		if(validCredentials(loginRequest.getUserName(), loginRequest.getPassword())) {
 			ResponseEntity<AccessToken> tokenResponse = tokenGenerator
 					.getTokenInfo(oauthServer + tokenPath, loginRequest.getClient(), loginRequest.getSecret());
-			AccessToken tokenInfo = tokenResponse.getBody();
-			responseStatus = HttpStatus.OK;
-			loginResponse.setResult(SUCCESS_RESULT);
-			loginResponse.setAccessToken(tokenInfo.getAccess_token());
+			// Validate atp Client Credentials authentication response
+			if(tokenResponse.getStatusCode() == HttpStatus.OK) {
+				AccessToken tokenInfo = tokenResponse.getBody();
+				responseStatus = HttpStatus.OK;
+				loginResponse.setResult(SUCCESS_RESULT);
+				loginResponse.setAccessToken(tokenInfo.getAccess_token());
+			} else {
+				loginResponse.setResult(FAIL_RESULT);
+				loginResponse.setAccessToken(null);
+				responseStatus = HttpStatus.UNAUTHORIZED;
+			}
 		} else {
 			loginResponse.setResult(FAIL_RESULT);
 			loginResponse.setAccessToken(null);
